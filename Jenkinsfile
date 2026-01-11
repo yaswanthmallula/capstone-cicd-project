@@ -27,10 +27,11 @@ pipeline {
             }
         }
 
-        stage('Deploy (Docker Compose)') {
-            steps {
-                bat 'docker-compose up -d --build'
-            }
-        }
+       stage('Deploy (Docker Compose)') {
+    steps {
+        bat 'docker compose up -d --build'
+    }
+}
+
     }
 }
