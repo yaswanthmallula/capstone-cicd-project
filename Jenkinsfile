@@ -10,25 +10,25 @@ pipeline {
 
         stage('Build Backend Image') {
             steps {
-                sh 'docker build -t backend-app ./backend'
+                bat 'docker build -t backend ./backend'
             }
         }
 
         stage('Build Frontend Image') {
             steps {
-                sh 'docker build -t frontend-app ./frontend'
+                bat 'docker build -t frontend ./frontend'
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'docker run --rm backend-app pytest'
+                bat 'docker run --rm backend pytest'
             }
         }
 
         stage('Deploy (Docker Compose)') {
             steps {
-                sh 'docker-compose up -d --build'
+                bat 'docker-compose up -d --build'
             }
         }
     }
