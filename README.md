@@ -204,3 +204,10 @@ Author
 
 Yaswanth Mallula
 DevOps Capstone Project
+
+## Demo Video
+
+A short demo video showing Jenkins pipeline execution and application health verification is available here:
+
+Video Link:
+https://drive.google.com/file/d/1spipO5loG2fZ1yr4oYaIUiaG9-occzAc/view?usp=sharing
