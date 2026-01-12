@@ -30,17 +30,27 @@ pipeline {
         stage('Security Scan (Trivy)') {
             steps {
                 bat '''
-                echo ==== Trivy Scan Backend ====
-                docker save backend | docker run --rm -i aquasec/trivy:latest image ^
-                  --severity HIGH,CRITICAL ^
-                  --exit-code 0 ^
-                  --input -
+                echo ===== Trivy Scan Backend =====
+                docker save backend -o backend.tar
 
-                echo ==== Trivy Scan Frontend ====
-                docker save frontend | docker run --rm -i aquasec/trivy:latest image ^
+                docker run --rm ^
+                  -v "%cd%:/scan" ^
+                  aquasec/trivy:latest image ^
+                  --scanners vuln ^
                   --severity HIGH,CRITICAL ^
                   --exit-code 0 ^
-                  --input -
+                  --input /scan/backend.tar
+
+                echo ===== Trivy Scan Frontend =====
+                docker save frontend -o frontend.tar
+
+                docker run --rm ^
+                  -v "%cd%:/scan" ^
+                  aquasec/trivy:latest image ^
+                  --scanners vuln ^
+                  --severity HIGH,CRITICAL ^
+                  --exit-code 0 ^
+                  --input /scan/frontend.tar
                 '''
             }
         }
@@ -64,10 +74,10 @@ pipeline {
 
     post {
         success {
-            echo ' CI/CD Pipeline completed successfully'
+            echo '✅ CI/CD Pipeline completed successfully'
         }
         failure {
-            echo ' Pipeline failed. Check logs'
+            echo '❌ Pipeline failed. Check logs'
         }
     }
 }
