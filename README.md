@@ -1,42 +1,43 @@
- CI/CD Capstone Project – Docker & Jenkins
- Project Overview
+CI/CD Capstone Project – Docker & Jenkins
+Project Overview
 
-This project demonstrates a complete end-to-end CI/CD pipeline that automatically builds, tests, scans, deploys, and verifies a containerized 2-tier web application using Docker, Jenkins, and Trivy.
+This project demonstrates a complete end-to-end CI/CD pipeline that automatically builds, tests, scans, deploys, and verifies a containerized two-tier web application using Docker, Jenkins, and Trivy.
 
-The pipeline ensures:
+The project follows real-world DevOps best practices and is suitable for:
 
-Code quality through automated testing
+Academic capstone submission
 
-Security through container vulnerability scanning
+DevOps fresher interviews
 
-Reliable deployments using Docker Compose
+CI/CD demonstrations
 
-Health verification after deployment
-
- Architecture Overview
+System Architecture
 Application Architecture
-Frontend (Nginx / Static UI)
-        ↓
+
+Frontend (Static UI / Nginx)
 Backend (Flask API)
-        ↓
-PostgreSQL Database
+Database (PostgreSQL)
 
-CI/CD Flow
-GitHub
-   ↓
-Jenkins Pipeline
-   ↓
-Docker Build
-   ↓
-Unit Tests
-   ↓
-Trivy Security Scan
-   ↓
-Docker Compose Deployment
-   ↓
-Health Check Verification
+Flow:
+Frontend communicates with Backend, and Backend communicates with PostgreSQL.
 
- Tech Stack
+CI/CD Pipeline Flow
+
+Code is pushed to GitHub
+
+Jenkins pipeline is triggered
+
+Docker images are built
+
+Unit tests are executed inside containers
+
+Security scanning is performed using Trivy
+
+Application is deployed using Docker Compose
+
+Health endpoint is verified
+
+Technology Stack
 Category	Technology
 Frontend	HTML / Nginx
 Backend	Python (Flask)
@@ -46,7 +47,7 @@ Orchestration	Docker Compose
 CI/CD	Jenkins
 Security	Trivy
 Version Control	GitHub
-  Project Structure
+Project Structure
 capstone-cicd-project/
 │
 ├── backend/
@@ -73,30 +74,32 @@ capstone-cicd-project/
 ├── Jenkinsfile
 └── README.md
 
-  Docker Implementation
-  Best Practices Used
+Docker Implementation
+Best Practices Followed
 
-Non-root users inside containers
-
-Layer caching for faster builds
-
-Environment variables via .env files
+Separate Dockerfiles for frontend and backend
 
 Lightweight base images
 
+Efficient Docker layer caching
+
+Environment variables managed through env files
+
+No hard-coded secrets
+
 Docker Compose Services
 
-frontend
+Frontend service
 
-backend
+Backend service
 
-db (PostgreSQL)
+PostgreSQL database
 
-Named volumes for DB persistence
+Persistent volume for database storage
 
 Custom bridge network
 
-  Environment Configuration
+Environment Configuration
 
 Example: config/staging.env
 
@@ -106,85 +109,98 @@ DB_NAME=appdb
 DB_USER=appuser
 DB_PASSWORD=apppass
 
-  CI/CD Pipeline (Jenkins)
+
+Environment files support development, staging, and production deployments.
+
+CI/CD Pipeline Using Jenkins
 Pipeline Stages
 
-Checkout code from GitHub
+Checkout source code from GitHub
 
-Build Docker images
+Build Docker images for frontend and backend
 
-Run unit tests inside container
+Run unit tests inside backend container
 
-Trivy vulnerability scan (HIGH & CRITICAL)
+Perform vulnerability scanning using Trivy
 
-Deploy using Docker Compose
+Deploy application using Docker Compose
 
-Verify /health endpoint
+Verify application health endpoint
 
-Mark build SUCCESS / FAILURE
+Mark pipeline as success or failure
 
-  Security Scanning (Trivy)
+Security Scanning
 
-Scans Docker images for:
+Trivy is used to scan Docker images for operating system and application dependency vulnerabilities.
+High and critical severity vulnerabilities are detected during the pipeline execution.
+Image archive scanning is used for Windows Jenkins compatibility.
 
-OS vulnerabilities
-
-Language dependencies
-
-Fails pipeline on HIGH / CRITICAL issues
-
-Uses Docker image archive scanning for reliability
-
-  Health Check
+Health Check
 
 Endpoint:
 
 GET http://localhost:5000/health
 
 
-Successful Response:
+Expected Response:
 
 {
   "status": "UP",
   "database": "CONNECTED"
 }
 
-  How to Run Locally
+
+The pipeline proceeds only if the health check is successful.
+
+How to Run Locally
 docker compose up -d --build
 
 
-Verify:
+Verification:
 
-Frontend → http://localhost
+Frontend: http://localhost
 
-Backend → http://localhost:5000
+Backend: http://localhost:5000
 
-Health → http://localhost:5000/health
+Health endpoint: http://localhost:5000/health
 
-  Troubleshooting Guide
-Issue	Fix
-Container name conflict	Remove container_name
-DB not connecting	Check env files
-Trivy image not found	Ensure image built before scan
-Pipeline fails	Check Jenkins console logs
-  Key Deliverables Achieved
+Troubleshooting
+Container name conflict
 
-✅ Working 2-tier application with DB
+Issue: Container already exists
+Fix: Removed container_name from docker-compose.yml
 
-✅ Optimized Docker images
+Trivy scan failure on Windows
 
-✅ Full CI/CD pipeline
+Issue: Docker socket not accessible
+Fix: Used Docker image archive scanning
 
-✅ Security scanning
+Database connection error
 
-✅ Automated deployment
+Issue: Backend cannot connect to database
+Fix: Used service name db and environment variables
 
-✅ Health verification
+Jenkins pipeline failure
 
-✅ Production-ready project structure
+Fix: Checked Jenkins console output and resolved stage-specific errors
 
-  Author
+Key Deliverables Achieved
+
+Working two-tier web application with database
+
+Optimized Docker images
+
+Complete CI/CD pipeline using Jenkins
+
+Automated testing and security scanning
+
+Docker Compose based deployment
+
+Health verification
+
+Professional documentation
+
+Author
 
 Yaswanth Mallula
 DevOps Capstone Project
-CI/CD | Docker | Jenkins | Security
